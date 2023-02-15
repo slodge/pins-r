@@ -4,10 +4,16 @@
 \alias{board_url}
 \title{Use a vector of URLs as a board}
 \usage{
-board_url(urls, cache = NULL, use_cache_on_failure = is_interactive())
+board_url(
+  urls,
+  cache = NULL,
+  auth = NULL,
+  use_cache_on_failure = is_interactive()
+)
 }
 \arguments{
-\item{urls}{Identify available pins being served at a URL or set of URLs (see details):
+\item{urls}{Identify available pins being served at a URL or set of URLs (see
+details):
 \itemize{
 \item Unnamed string: URL to a \link[=write_board_manifest]{manifest file}.
 \item Named character vector: URLs to specific pins (does not support versioning).
@@ -18,44 +24,48 @@ board_url(urls, cache = NULL, use_cache_on_failure = is_interactive())
 downloading files multiple times. The default stores in a standard
 cache location for your operating system, but you can override if needed.}
 
-\item{use_cache_on_failure}{If the pin fails to download, is it ok to
-use the last cached version? Defaults to \code{is_interactive()} so you'll
-be robust to poor internet connectivity when exploring interactively,
-but you'll get clear errors when the code is deployed.}
+\item{auth}{An optional \url{httr::authenticate} object to
+provide authentication for e.g. RStudio Connect pins.}
+
+\item{use_cache_on_failure}{If the pin fails to download, is it ok to use the
+last cached version? Defaults to \code{is_interactive()} so you'll be robust to
+poor internet connectivity when exploring interactively, but you'll get
+clear errors when the code is deployed.}
 }
 \description{
-\code{board_url()} lets you build up a board from individual urls or a \link[=write_board_manifest]{manifest file}.
+\code{board_url()} lets you build up a board from individual urls or
+a \link[=write_board_manifest]{manifest file}.
 
 \code{board_url()} is read only.
 }
 \details{
-The way \code{board_url()} works depends on the type of the \code{urls} argument:
+The way \code{board_url()} works depends on the type of the \code{urls}
+argument:
 \itemize{
 \item Unnamed character scalar, i.e. \strong{a single URL} to a
 \link[=write_board_manifest]{manifest file}: If the URL ends in a \code{/},
-\code{board_url()} will look for a \verb{_pins.yaml} manifest. If the manifest
-file parses to a named list, versioning is supported. If it parses to a
-named character vector, the board will not support versioning.
+\code{board_url()} will look for a \verb{_pins.yaml} manifest. If the manifest file
+parses to a named list, versioning is supported. If it parses to a named
+character vector, the board will not support versioning.
 \item \strong{Named character vector of URLs}: If the URLs end in a \code{/},
 \code{board_url()} will look for a \code{data.txt} that provides metadata for the
 associated pin. The easiest way to generate this file is to upload a pin
 version directory created by \code{\link[=board_folder]{board_folder()}}. Versioning is not supported.
 \item \strong{Named list}, where the values are character vectors of URLs and each
-element of the vector refers to a version of the particular pin: If a
-URL ends in a \code{/}, \code{board_url()} will look for a \code{data.txt} that
-provides metadata. Versioning is supported.
+element of the vector refers to a version of the particular pin: If a URL
+ends in a \code{/}, \code{board_url()} will look for a \code{data.txt} that provides
+metadata. Versioning is supported.
 }
 
 Using a vector of URLs can be useful because \code{\link[=pin_download]{pin_download()}} and
 \code{\link[=pin_read]{pin_read()}} will be cached; they'll only re-download the data if it's
-changed from the last time you downloaded it (using the tools of
-\href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching}{HTTP caching}).
-You'll also be protected from the vagaries of the internet; if a fresh
-download fails, you'll get the previously cached result with a warning.
+changed from the last time you downloaded it (using the tools of \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching}{HTTP caching}). You'll
+also be protected from the vagaries of the internet; if a fresh download
+fails, you'll get the previously cached result with a warning.
 
-Using a \link[=write_board_manifest]{manifest file} can be useful because you
-can serve a board of pins and allow collaborators to access the board
-straight from a URL, without worrying about board-level storage details.
+Using a \link[=write_board_manifest]{manifest file} can be useful because you can
+serve a board of pins and allow collaborators to access the board straight
+from a URL, without worrying about board-level storage details.
 }
 \examples{
 github_raw <- function(x) paste0("https://raw.githubusercontent.com/", x)

@@ -62,10 +62,10 @@ board object.}
 
 \item{versioned}{Should this board be registered with support for versions?}
 
-\item{use_cache_on_failure}{If the pin fails to download, is it ok to
-use the last cached version? Defaults to \code{is_interactive()} so you'll
-be robust to poor internet connectivity when exploring interactively,
-but you'll get clear errors when the code is deployed.}
+\item{use_cache_on_failure}{If the pin fails to download, is it ok to use the
+last cached version? Defaults to \code{is_interactive()} so you'll be robust to
+poor internet connectivity when exploring interactively, but you'll get
+clear errors when the code is deployed.}
 
 \item{output_files}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} No longer supported.}
 
